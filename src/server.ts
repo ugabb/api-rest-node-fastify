@@ -5,8 +5,8 @@ const app = fastify();
 
 app.get("/hello", async () => {
   try {
-    const tables = await knexInstance("sqlite_schema").select("*");
-    return tables;
+    const transactions = await knexInstance("transactions").select("*");
+    return transactions;
   } catch (error) {
     console.error("Error occurred while accessing database:", error);
     throw new Error("Internal Server Error");
