@@ -1,6 +1,7 @@
-import { test, beforeAll, afterAll, describe, it, expect } from "vitest";
+import { test, beforeAll,beforeEach, afterAll, describe, it, expect } from "vitest";
 import request from "supertest";
 import { app } from "../app";
+import { execSync } from "node:child_process";
 
 // Categorizando os testes.
 describe("Transactions Routes", () => {
@@ -9,6 +10,13 @@ describe("Transactions Routes", () => {
   beforeAll(async () => {
     await app.ready();
   });
+
+  // Antes de cada teste vai ser limpado o banco de dados e gerado novamente a partir da última migration
+  beforeEach(() => {
+    // execSync roda comandos no terminal do node
+    execSync("npm run knex migrate:rollback --al")
+    execSync("npm run knex migrate:latest")
+  })
 
   // fecha a aplicação após realizar os testes.
   afterAll(async () => {
